@@ -1,0 +1,11 @@
+[Unit]
+Description=Reachy AP
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/reachy-access-point
+
+[Install]
+WantedBy=multi-user.target
