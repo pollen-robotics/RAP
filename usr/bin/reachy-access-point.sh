@@ -9,10 +9,8 @@ log() {
 }
 
 
-config_path="/boot/hotspot"
-
-if [ -f $config_path ]; then
-    log "Config file found at $config_path, activating access point"
+setup_hotspot() {
+    log "Activating access point"
 
     if ! grep "^interface wlan0$" /etc/dhcpcd.conf; then
         log "Configure as static IP"
@@ -52,9 +50,10 @@ EOT
     systemctl restart hostapd
 
     log "Access point UP"
+}
 
-else
-    log "Deactivating access point"
+activate_wlan_dhcp() {
+    log "Activating DHCP on WLAN"
 
     if [ "$(sysctl -n net.ipv4.ip_forward 2>/dev/null)" = "1" ]; then
         sysctl -q -w net.ipv4.ip_forward=0
@@ -86,8 +85,30 @@ else
     fi
 
     systemctl restart networking
+}
 
-    log "Access point DOWN"
-fi
 
+run_hotspot_if_no_wifi() {
+    activate_wlan_dhcp
+
+    trial=0
+
+    while [ $trial -lt  10 ]
+    do
+        sleep 5s
+
+        log "Looking for Wifi..."
+        if ifconfig wlan0 | grep -q inet; then
+            log "Connected to WiFi!"
+            return
+        fi
+
+        trial=$((trial+1))
+    done
+
+    log "No WiFi found!"
+    setup_hotspot
+}
+
+run_hotspot_if_no_wifi
 exit 0
