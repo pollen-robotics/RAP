@@ -39,3 +39,9 @@ systemctl enable reachy-access-point.service
 
 cp scripts/etc/systemd/system/reachy-dashboard.service /etc/systemd/system/reachy-dashboard.service
 systemctl enable reachy-dashboard.service
+
+apt-get install -y iptables-persistent
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to 3972
+iptables-save > /etc/iptables/rules.v4
+ip6tables-save > /etc/iptables/rules.v6
