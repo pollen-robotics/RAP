@@ -1,8 +1,11 @@
+import os
+
 from flask import Flask, request, redirect, url_for, render_template
 
 import tools
 
 app = Flask(__name__, static_url_path='')
+app.secret_key = os.urandom(24)
 
 notifications = []
 
@@ -32,7 +35,7 @@ def wifi():
 
     if wlan_config['mode'] == 'DHCP':
         status['level'] = 'success'
-        status['icon'] = 'wifi_tethering'
+        status['icon'] = 'wifi'
         status['title'] = 'WiFi'
         status['message'] = 'Connected'
 
