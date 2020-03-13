@@ -53,3 +53,13 @@ def wifi():
         notifications=notifications,
         status=status,
     )
+
+
+@app.route('/restart')
+def restart():
+    tools.restart_raspberry(delay=5)
+    return render_template('reboot.html')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=3972)

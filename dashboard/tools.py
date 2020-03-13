@@ -1,7 +1,9 @@
 import re
 import sys
+import time
 
-from subprocess import check_output, Popen, PIPE, CalledProcessError
+from subprocess import check_output, Popen, PIPE, CalledProcessError, call
+from threading import Thread
 
 
 def setup_new_wifi(ssid, password):
@@ -42,8 +44,9 @@ def get_wlan_status():
     }
 
 
-if __name__ == '__main__':
-    setup_new_wifi(
-        ssid='pollen-demo',
-        password='effetdemo',
-    )
+def restart_raspberry(delay):
+    def delay_halt():
+        time.sleep(delay)
+        call(['sudo', 'halt'])
+
+    Thread(target=delay_halt).start()
