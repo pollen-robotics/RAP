@@ -5,8 +5,12 @@
 set -e
 
 apt update
-apt install -y dnsmasq hostapd
 
+#######################################
+# Install, setup Access Point service #
+#######################################
+
+apt install -y dnsmasq hostapd
 
 if [ -f /etc/hostapd/hostapd.conf ]; then
   mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.old
@@ -29,3 +33,9 @@ chmod +x /usr/bin/reachy-access-point
 
 systemctl enable reachy-access-point.service
 
+###############################
+# Install and setup Dashboard #
+###############################
+
+cp scripts/etc/systemd/system/reachy-dashboard.service /etc/systemd/system/reachy-dashboard.service
+systemctl enable reachy-dashboard.service

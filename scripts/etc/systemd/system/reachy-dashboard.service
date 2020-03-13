@@ -1,0 +1,14 @@
+[Unit]
+Description=Reachy Dashboard
+After=network-online.target
+
+[Service]
+PIDFile=/var/run/reachy-dashboard.pid
+ExecStart=/usr/bin/python3 /home/pi/dev/RAP/dashboard/server.py
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/dev/RAP/dashboard/
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
