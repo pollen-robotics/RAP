@@ -44,9 +44,9 @@ def get_wlan_status():
     }
 
 
-def restart_raspberry(delay):
+def halt_raspberry(delay):
     def delay_halt():
         time.sleep(delay)
-        call(['sudo', 'reboot'])
+        call(['sudo', 'halt'])
 
     Thread(target=delay_halt).start()

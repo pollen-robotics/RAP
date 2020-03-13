@@ -55,10 +55,10 @@ def wifi():
     )
 
 
-@app.route('/restart')
-def restart():
-    tools.restart_raspberry(delay=5)
-    return render_template('reboot.html')
+@app.route('/halt')
+def halt():
+    tools.halt_raspberry(delay=5)
+    return render_template('halt.html')
 
 
 if __name__ == '__main__':
