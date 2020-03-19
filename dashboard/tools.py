@@ -5,6 +5,8 @@ import time
 from subprocess import check_output, Popen, PIPE, CalledProcessError, call
 from threading import Thread
 
+from reachy.utils.discovery import discover_all
+
 
 def setup_new_wifi(ssid, password):
     config_file = '/etc/wpa_supplicant/wpa_supplicant.conf'
@@ -50,3 +52,7 @@ def halt_raspberry(delay):
         call(['sudo', 'halt'])
 
     Thread(target=delay_halt).start()
+
+
+def get_reachy_status():
+    return {'status': discover_all()}

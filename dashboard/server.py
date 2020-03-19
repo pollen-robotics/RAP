@@ -1,6 +1,7 @@
 import os
+import json
 
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template, Response
 
 import tools
 
@@ -61,5 +62,13 @@ def halt():
     return render_template('halt.html')
 
 
+@app.route('/api/reachy-status')
+def update_status():
+    return Response(
+        response=json.dumps(tools.get_reachy_status()),
+        mimetype='application/json',
+    )
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3972)
+    app.run(host='0.0.0.0', port=3972, debug=True)
