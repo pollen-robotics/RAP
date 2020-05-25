@@ -109,13 +109,18 @@
         request.onload = e => {
           const status = JSON.parse(request.response).status;
 
-          partsElement.innerHTML = "";
+          if (Object.keys(status).length === 0) {
+            partsElement.innerHTML = "No USB found. Check the connection and try again!";
+          }
+          else {
+            partsElement.innerHTML = "";
 
-          for (const partName in status) {
-            const part = status[partName];
+            for (const partName in status) {
+              const part = status[partName];
 
-            if (part.status != "missing") {
-              partsElement.appendChild(makeCardForPart(part)); 
+              if (part.status != "missing") {
+                partsElement.appendChild(makeCardForPart(part)); 
+              }
             }
           }
         };
@@ -124,7 +129,6 @@
       };
 
       const makeCardForPart = (part) => {
-        console.log(part);
         const iconName = {"ok": "check_circle", "problem": "highlight_off"}[part.status];
         const level = {"ok": "success", "problem": "danger"}[part.status];
 
