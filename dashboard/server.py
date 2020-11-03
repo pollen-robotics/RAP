@@ -62,6 +62,11 @@ def halt():
     return render_template('halt.html')
 
 
+@app.route('/info')
+def info():
+    return render_template('info.html')
+
+
 @app.route('/api/reachy-status')
 def update_status():
     return Response(
@@ -70,5 +75,19 @@ def update_status():
     )
 
 
+@app.route('/api/update-reachy')
+def update_reachy():
+    tools.update_git()
+    return render_template('info.html')
+
+
+@app.route('/api/info-update')
+def info_update():
+    return Response(
+        response=json.dumps(tools.get_git_status()),
+        mimetype='application/json',
+    )
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3972)
+    app.run(host='0.0.0.0', port=3972, debug=True)
