@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Reachy Dashboard</title>
+  <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="../assets/css/material-icons.css" />
+  <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+</head>
+
+
+<body class="">
+  <div class="wrapper ">
+
+    <div class="sidebar" data-color="purple" data-background-color="white" >
+      <div class="logo"><a href="#" class="simple-text logo-normal">Reachy</a></div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/wifi">
+              <i class="material-icons">wifi</i>
+              <p>WiFi Settings</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/info">
+              <i class="material-icons">info</i>
+              <p>Info</p>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/api/temperature">
+              <i class="material-icons">ac_unit</i>
+              <p>Temperature</p>
+            </a>
+          </li>
+          <li class="nav-item active-pro ">
+            <a class="nav-link" href="/halt">
+              <i class="material-icons">power_setting_new</i>
+              <p>Halt</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+<p id="temp_display" style="position: absolute; top: 30%; left: 50%"></p>
+
+
+<div class="container">
+    <div class="row" style="position: relative; left:300px" id="tempCards"></div>
+</div>
+
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/jquery.min.js"></script>
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap-material-design.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  
+
+  <script>
+      const printTemp = () => {
+        const request = new XMLHttpRequest();
+        const tempMotors = document.getElementById("temp_display");
+        request.onload = () => {
+        const tempMsg = JSON.parse(request.response);
+
+        const card = document.getElementById("tempCards");
+        
+        for (const part in tempMsg){
+            var content = "";
+            const t = tempMsg[part].temp;
+            for (const motor in t){
+                content += motor + " " + tempMsg[part].temp[motor] + "<br>";
+            };
+            card.appendChild(temperatureCard(part, content));
+        };
+        };
+        request.open("GET", '/api/get-temperature');
+        request.send();
+      };
+      window.onload = printTemp();
+  </script>
+
+<script>
+    const temperatureCard = (part, msg) => {
+        const card = document.createElement("div");
+        card.className = "card card-nav-tabs text-center";
+        const cardHeader = document.createElement("h3");
+        cardHeader.className = "card-header card-header-info";
+        cardHeader.innerHTML = part;
+        card.appendChild(cardHeader);
+        const cardBody = document.createElement("div");
+        const cardText = document.createElement("p");
+        cardText.className = "card-text";
+        cardText.innerHTML = msg;
+        cardBody.appendChild(cardText);
+        card.appendChild(cardBody);
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "col-md-3";
+        wrapper.appendChild(card);
+
+        return wrapper;
+    };
+</script>
+
+</body>
+</html>

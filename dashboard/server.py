@@ -89,5 +89,18 @@ def info_update():
     )
 
 
+@app.route('/api/temperature')
+def temperature():
+    return render_template('temperature.html')
+
+
+@app.route('/api/get-temperature')
+def get_temperature():
+    return Response(
+        response=json.dumps(tools.get_temperatures()),
+        mimetype='application/json',
+    )
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3972, debug=True)
