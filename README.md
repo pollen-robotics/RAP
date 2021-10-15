@@ -1,4 +1,6 @@
-# Reachy Access Point
+# Reachy Access Point 2019
+
+⚠️ This RAP only works on the version 2019 of Reachy equipped with a Raspberry-Pi! ⚠️
 
 Turns the Reachy Raspberry-Pi as an access point when not connected to a WiFi. Mostly useful for configuring your WiFi on the robot without having to physically access it.
 
